@@ -61,10 +61,17 @@ input {
 
 .list-item-leave-active {
     transition: all 1s ease-in;
+    position: absolute;
 }
 
 .list-item-leave-to {
     opacity: 0;
     transform: translateX(30px);
+}
+
+/* for all other items that is not entering ot leaving */
+.list-item-move {
+    /* because Vue uses a transform translate behind the scenes to move the other items */
+    transition: transform 0.8s ease-out;
 }
 </style>
