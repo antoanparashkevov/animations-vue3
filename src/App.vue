@@ -5,7 +5,16 @@
   </div>
     <div class="container">
 <!--        transition must only has one child inside-->
-        <transition>
+        <transition
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @after-enter="afterEnter"
+            @enter-cancelled="enterCancelled"
+            @before-leave="beforeLeave"
+            @leave="leave"
+            @after-leave="afterLeave"
+            @leave-cancelled="leaveCancelled"
+        >
             <p v-if="paraIsVisible">This is only sometimes visible...</p>
         </transition>
         <button @click="togglePara">Toggle para</button>
@@ -33,30 +42,87 @@ export default {
     return { 
         dialogIsVisible: false,
         isAnimate: false,
-        paraIsVisible: true,
+        paraIsVisible: false,
         isUsersVisible: true,
+        enterInterval: null,
+        leaveInterval: null
     };
   },
   methods: {
-      showUsers(){
-          this.isUsersVisible = false
-      },
-      hideUsers(){
-          this.isUsersVisible = true
-      },
+    showUsers(){
+        this.isUsersVisible = false
+    },
+    hideUsers(){
+        this.isUsersVisible = true
+    },
     showDialog() {
-      this.dialogIsVisible = true;
+        this.dialogIsVisible = true;
     },
     hideDialog() {
-      this.dialogIsVisible = false;
+        this.dialogIsVisible = false;
     },
     animateBlock() {
         this.isAnimate = true;
     },
     togglePara() {
         this.paraIsVisible = !this.paraIsVisible;
-    }
-  },
+    },
+    beforeEnter(el) {
+        console.log('beforeEnter')
+        console.log(el)
+        el.style.opacity = 0;
+    },
+    enter(el, done) {
+        console.log('enter')
+        console.log(el)
+        let round = 1;
+        this.enterInterval = setInterval(()=>{
+            el.style.opacity = round * 0.01;
+            round ++;
+            if(round > 100) {
+                clearInterval(this.enterInterval);
+                done();
+            }
+        },20)
+    },
+    afterEnter(el) {
+        console.log('afterEnter')
+        console.log(el)
+    },
+    enterCancelled(el) {
+        console.log('enterCancelled')
+        console.log(el)
+        clearInterval(this.enterInterval)
+    },
+    beforeLeave(el) {
+        console.log('beforeLeave')
+        console.log(el)
+        el.style.opacity = 1;
+    },
+    leave(el, done) {
+        console.log('leave')
+        console.log(el)
+        let round = 1;
+        this.leaveInterval = setInterval(()=>{
+            el.style.opacity = 1 - round * 0.01;
+            round++;
+            if(round > 100) {
+                clearInterval(this.leaveInterval)
+                done();
+            }
+        },20)
+    },
+    afterLeave(el) {
+        console.log('afterLeave')
+        console.log(el)
+    },
+    leaveCancelled(el) {
+        console.log('leaveCancelled')
+        console.log(el)
+        clearInterval(this.leaveInterval)
+    },
+    
+    },
 };
 </script>
 
@@ -126,31 +192,31 @@ button:active {
 
 /*Vue will add by default these three classes*/
 
-.v-enter-from {
+.para-enter-from {
     opacity: 0;
     transform: translateY(-30px);
 }
 
-.v-enter-active {
+.para-enter-active {
     /*will keep track for all newly added css properties*/
     transition: all 0.3s ease-out;
 }
 
-.v-enter-to {
+.para-enter-to {
     opacity: 1;
     transform: translateY(0);/*real position it should have on this page*/
 }
 
-.v-leave-from {
+.para-leave-from {
     opacity: 1;
     transform: translateY(0);
 }
 
-.v-leave-active {
+.para-leave-active {
     transition: all 0.3s ease-in;
 }
 
-.v-leave-to {
+.para-leave-to {
     opacity: 0;
     transform: translateY(30px);
 }
