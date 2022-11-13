@@ -4,7 +4,10 @@
     <button @click="animateBlock">Animate</button>
   </div>
     <div class="container">
-        <p v-if="paraIsVisible">This is only sometimes visible...</p>
+<!--        transition must only has one child inside-->
+        <transition>
+            <p v-if="paraIsVisible">This is only sometimes visible...</p>
+        </transition>
         <button @click="togglePara">Toggle para</button>
     </div>
   <base-modal @close="hideDialog" v-if="dialogIsVisible">
@@ -105,4 +108,23 @@ button:active {
         transform: translateX(-150px) scale(1);
     }
 }
+
+/*Vue will add by default these three classes*/
+
+.v-enter-from {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.v-enter-active {
+    /*will keep track for all newly added css properties*/
+    transition: all 0.3s ease-out;
+}
+
+.v-enter-to {
+    opacity: 1;
+    transform: translateY(0);/*real position it should have on this page*/
+}
+
+
 </style>
