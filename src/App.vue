@@ -1,4 +1,7 @@
 <template>
+    <div class="container">
+        <user-list></user-list>
+    </div>
   <div class="container">
     <div :class="['block', {animate: isAnimate}]"></div>
     <button @click="animateBlock">Animate</button>
@@ -6,6 +9,7 @@
     <div class="container">
 <!--        transition must only has one child inside-->
         <transition
+            :css="false"
             @before-enter="beforeEnter"
             @enter="enter"
             @after-enter="afterEnter"
@@ -37,7 +41,11 @@
 </template>  
 
 <script>
+import userList from "./components/userList";
 export default {
+    components: {
+        userList
+    },
   data() {
     return { 
         dialogIsVisible: false,
