@@ -78,6 +78,23 @@ button:active {
 }
 
 .animate {
-    transform: translateX(-100px);
+    /*transform: translateX(-150px);*/
+    animation: slide-scale 0.3s ease-out forwards;/*forwards to keep the last state*/
+}
+
+/*different states (keyframes) in percentages or 'from' and 'to' words */
+@keyframes slide-scale {
+    0% {
+        /*also change the size of the block (1 is the default value)*/
+        transform: translateX(0) scale(1);
+    }
+    
+    70% {
+        transform: translateX(-120px) scale(1.1);
+    }
+    
+    100% {
+        transform: translateX(-150px) scale(1);
+    }
 }
 </style>
