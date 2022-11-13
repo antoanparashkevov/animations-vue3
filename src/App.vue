@@ -3,6 +3,10 @@
     <div :class="['block', {animate: isAnimate}]"></div>
     <button @click="animateBlock">Animate</button>
   </div>
+    <div class="container">
+        <p v-if="paraIsVisible">This is only sometimes visible...</p>
+        <button @click="togglePara">Toggle para</button>
+    </div>
   <base-modal @close="hideDialog" v-if="dialogIsVisible">
     <p>This is a test dialog!</p>
     <button @click="hideDialog">Close it!</button>
@@ -18,6 +22,7 @@ export default {
     return { 
         dialogIsVisible: false,
         isAnimate: false,
+        paraIsVisible: true,
     };
   },
   methods: {
@@ -29,6 +34,9 @@ export default {
     },
     animateBlock() {
         this.isAnimate = true;
+    },
+    togglePara() {
+        this.paraIsVisible = !this.paraIsVisible;
     }
   },
 };
